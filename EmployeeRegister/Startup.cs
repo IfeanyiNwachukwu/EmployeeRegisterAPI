@@ -26,7 +26,8 @@ namespace EmployeeRegister
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
-
+            services.ConfigureSqlContext(Configuration);
+            
             services.AddControllers();
         }
 

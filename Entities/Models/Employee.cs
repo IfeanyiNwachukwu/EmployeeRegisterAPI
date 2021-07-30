@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Models
 {
@@ -22,6 +18,6 @@ namespace Entities.Models
         public string Position { get; set; }
         [ForeignKey(nameof(Company))]
         public Guid  CompanyId { get; set; }
-        public Company Company { get; set; }
+        public Company Company { get; set; } //Navigational property,will not be mapped
     }
 }
