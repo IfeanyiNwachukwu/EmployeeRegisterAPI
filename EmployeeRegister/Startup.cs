@@ -27,7 +27,9 @@ namespace EmployeeRegister
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
             services.ConfigureSqlContext(Configuration);
-            
+            services.ConfigurerepositoryManager();
+
+
             services.AddControllers();
         }
 
