@@ -28,6 +28,7 @@ namespace EmployeeRegister
             services.ConfigureLoggerServices();
             services.ConfigureSqlContext(Configuration);
             services.ConfigurerepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
 
 
             services.AddControllers();
