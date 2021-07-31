@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositoryinterfaces;
 using Entities;
 using Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,5 +18,9 @@ namespace Repository.RepositoryImplementations
        => FindAll(trackChanges)
             .OrderBy(c => c.Name)
             .ToList();
+
+        public Company GetCompany(Guid companyId, bool trackchanges) =>
+            FindByCondition(c => c.Id.Equals(companyId), trackchanges)
+            .SingleOrDefault();
     }
 }
