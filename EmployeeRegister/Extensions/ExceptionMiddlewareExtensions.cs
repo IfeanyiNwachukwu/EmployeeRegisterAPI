@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeRegister.Extensions
 {
+    /// <summary>
+    /// Global Error Exception Handler
+    /// </summary>
     public static class ExceptionMiddlewareExtensions
     {
         

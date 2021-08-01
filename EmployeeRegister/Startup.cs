@@ -33,7 +33,21 @@ namespace EmployeeRegister
             services.AddAutoMapper(typeof(Startup));
 
 
-            services.AddControllers();
+            /*   services.AddControllers();*/ //returns onlyJSON content by default
+
+
+            //To allow XML content
+            //services.AddControllers(config =>
+            //{
+            //    config.RespectBrowserAcceptHeader = true;
+            //    config.ReturnHttpNotAcceptable = true; // Returns 406 Not Acceptable if client tries to negotiate for a media type server does not support
+            //}).AddXmlDataContractSerializerFormatters();
+
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            }).AddCustomCSVFormatter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

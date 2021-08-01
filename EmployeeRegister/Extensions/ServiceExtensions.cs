@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using EmployeeRegister.ContentNegotiation;
 using Entities;
 using LoggerServices;
 using Microsoft.AspNetCore.Builder;
@@ -42,7 +43,8 @@ namespace EmployeeRegister.Extensions
         public static void ConfigurerepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-        
+        public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
+            builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
 
     }
 }
