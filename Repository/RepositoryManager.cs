@@ -2,11 +2,6 @@
 using Contracts.Repositoryinterfaces;
 using Entities;
 using Repository.RepositoryImplementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -26,7 +21,10 @@ namespace Repository
             get
             {
                 if (_companyRepository == null)
+                {
                     _companyRepository = new CompanyRepository(_repositoryContext);
+                }
+
                 return _companyRepository;
             }
         }
