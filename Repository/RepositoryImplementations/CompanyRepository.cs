@@ -22,5 +22,12 @@ namespace Repository.RepositoryImplementations
         public Company GetCompany(Guid companyId, bool trackchanges) =>
             FindByCondition(c => c.Id.Equals(companyId), trackchanges)
             .SingleOrDefault();
+
+        public void CreateCompany(Company company) => Create(company);
+
+        public IEnumerable<Company> GetByIds(IEnumerable<Guid> ids, bool trachChanges) =>
+            FindByCondition(x => ids.Contains(x.Id), trachChanges)
+            .ToList();
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects.ReadOnly;
+using Entities.DataTransferObjects.Writable;
 using Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace EmployeeRegister.AutoMapper
                 .ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
 
             CreateMap<Employee, EmployeeDTO>();
+            CreateMap<CompanyDTOW, Company>();
+            CreateMap<EmployeeDTOW, Employee>();
         }
     }
 }

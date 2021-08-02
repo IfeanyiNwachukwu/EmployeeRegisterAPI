@@ -26,6 +26,10 @@ namespace Repository.RepositoryImplementations
                 .SingleOrDefault();
         }
 
-        
+        public void CreateEmployeeForCompany(Guid companyId, Employee employee)
+        {
+            employee.CompanyId = companyId;
+            Create(employee);
+        }
     }
 }

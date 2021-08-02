@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.ReadOnly;
+using Entities.DataTransferObjects.Writable;
+using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,7 +27,7 @@ namespace EmployeeRegister.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public IActionResult GetEmployeesForCompany(Guid companyId)
         {
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
@@ -40,7 +42,7 @@ namespace EmployeeRegister.Controllers
             return Ok(employeesDto);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}", Name = "GetEmployeeForCompany")]
         public IActionResult GetEmployeeForCompany(Guid companyId, Guid id)
         {
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
@@ -57,6 +59,30 @@ namespace EmployeeRegister.Controllers
             }
             var employee = _mapper.Map<EmployeeDTO>(employeeDb);
             return Ok(employee);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeDTOW model)
+        {
+            if(model == null)
+            {
+                _logger.LogError("Employee for creation DTO sent from model is null");
+                return BadRequest("Employee for creation DTO  is null");
+            }
+            var company = _repository.Company.GetCompany(companyId, trackChanges: false);
+            if(company == null)
+            {
+                _logger.LogInfo($"company with id: {companyId} doesn't exist in the database");
+                return NotFound();
+            }
+            var employeeEntity = _mapper.Map<Employee>(model);
+            _repository.Employee.CreateEmployeeForCompany(companyId,employeeEntity);
+            _repository.Save();
+
+            var employeeToReturn = _mapper.Map<EmployeeDTO>(employeeEntity);
+
+
+            return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
         }
     }
 }
