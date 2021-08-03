@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Entities.DataTransferObjects.Writable
+namespace Entities.DataTransferObjects.Writable.Manipulatable
 {
-    public class CompanyDTOW
+    public abstract class CompanyForManipulationDTOW
     {
         [Required(ErrorMessage = "Company name is a required field.")]
         [MaxLength(60, ErrorMessage = "Maximum length for the name is 60 characters")]

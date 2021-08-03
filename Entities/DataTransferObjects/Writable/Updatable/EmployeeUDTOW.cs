@@ -1,9 +1,9 @@
-﻿namespace Entities.DataTransferObjects.Writable.Updatable
+﻿using Entities.DataTransferObjects.Writable.Manipulatable;
+
+namespace Entities.DataTransferObjects.Writable.Updatable
 {
-    public class EmployeeUDTOW
+    public class EmployeeUDTOW : EmployeeForManipulationDTOW
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Position { get; set; }
+        
     }
 }

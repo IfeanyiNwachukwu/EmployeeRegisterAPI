@@ -68,6 +68,11 @@ namespace EmployeeRegister.Controllers
                 _logger.LogError("Employee for creation DTO sent from model is null");
                 return BadRequest("Employee for creation DTO  is null");
             }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the Employee Creation DTO");
+                return UnprocessableEntity(ModelState);
+            }
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
             if(company == null)
             {
@@ -113,6 +118,11 @@ namespace EmployeeRegister.Controllers
                 _logger.LogError("Employye Update DTO is null");
                 return BadRequest("Employye Update DTO is null");
             }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("DTO for updating emplooyee sent from client is null");
+                return UnprocessableEntity(ModelState);
+            }
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
             if(company == null)
             {
@@ -156,7 +166,15 @@ namespace EmployeeRegister.Controllers
             }
 
             var employeeToPatch = _mapper.Map<EmployeeUDTOW>(employeeentity);
+            
+            TryValidateModel(employeeToPatch);
+            
             patchDoc.ApplyTo(employeeToPatch);
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the patch document");
+                return UnprocessableEntity(ModelState);
+            }
 
             _mapper.Map(employeeToPatch, employeeentity);
             _repository.Save();
