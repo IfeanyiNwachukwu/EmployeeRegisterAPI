@@ -4,12 +4,10 @@ using EmployeeRegister.ModelBinders;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
 using Entities.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeRegister.Controllers
 {
@@ -113,6 +111,21 @@ namespace EmployeeRegister.Controllers
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
 
             return CreatedAtRoute("CompanyCollection", new { ids }, companyCollectionToReturn);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCompany(Guid id)
+        {
+            var company = _repository.Company.GetCompany(id, trackChanges: false);
+            if(company == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _repository.Company.DeleteCompany(company);
+            _repository.Save();
+
+            return NoContent();
         }
    
     }

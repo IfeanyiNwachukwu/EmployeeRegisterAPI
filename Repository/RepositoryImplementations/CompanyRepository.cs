@@ -29,5 +29,9 @@ namespace Repository.RepositoryImplementations
             FindByCondition(x => ids.Contains(x.Id), trachChanges)
             .ToList();
 
+        public void DeleteCompany(Company company)
+        {
+            Delete(company);
+        }
     }
 }
