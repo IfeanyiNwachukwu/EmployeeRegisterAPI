@@ -81,7 +81,7 @@ namespace EmployeeRegister.Controllers
             }
             var employeeEntity = _mapper.Map<Employee>(model);  // turning our model to an employee type
             _repository.Employee.CreateEmployeeForCompany(companyId,employeeEntity);
-            _repository.Save();
+            _repository.SaveAsync();
 
             var employeeToReturn = _mapper.Map<EmployeeDTO>(employeeEntity);  // destination | source _mapper.Map<TDestination>(TSource object)
 
@@ -105,7 +105,7 @@ namespace EmployeeRegister.Controllers
                 return NotFound();
             }
             _repository.Employee.DeleteEmployee(employeeForCompany);
-            _repository.Save();
+            _repository.SaveAsync();
 
             return NoContent();
         }
@@ -137,7 +137,7 @@ namespace EmployeeRegister.Controllers
             }
 
             _mapper.Map(model, employeeEntity); // source | destination... everything in model is copied into employeeentity
-            _repository.Save();
+            _repository.SaveAsync();
 
             return NoContent();
         }
@@ -177,7 +177,7 @@ namespace EmployeeRegister.Controllers
             }
 
             _mapper.Map(employeeToPatch, employeeentity);
-            _repository.Save();
+            _repository.SaveAsync();
 
             return NoContent();
         }
