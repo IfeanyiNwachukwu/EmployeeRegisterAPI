@@ -3,6 +3,7 @@ using EmployeeRegister.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,7 +32,10 @@ namespace EmployeeRegister
             services.ConfigureSqlContext(Configuration);
             services.ConfigurerepositoryManager();
             services.AddAutoMapper(typeof(Startup));
-
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;  //Suppressing the 400 BadRequest() error
+            }); 
 
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 

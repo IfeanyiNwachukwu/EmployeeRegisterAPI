@@ -62,6 +62,11 @@ namespace EmployeeRegister.Controllers
                 _logger.LogError("CompanyCreationDto object sent from client is null.");
                 return BadRequest("CompanyForCreationDto object is null");
             }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("DTO for creating company model state is not valid");
+                return UnprocessableEntity(ModelState);
+            }
             var companyEntity = _mapper.Map<Company>(model); //model is the object source
 
             _repository.Company.CreateCompany(companyEntity);
@@ -136,6 +141,11 @@ namespace EmployeeRegister.Controllers
             {
                 _logger.LogError("Update DTO for company sent from client is null");
                 return BadRequest("Update DTO for company sent from client is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("DTO for updating emplooyee sent from client is null");
+                return UnprocessableEntity(ModelState);
             }
             var companyEntity = _repository.Company.GetCompany(id, trackChanges: true);
             if(companyEntity == null)
