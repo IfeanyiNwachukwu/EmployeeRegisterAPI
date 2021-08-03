@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
+using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeRegister.AutoMapper
 {
@@ -16,9 +13,11 @@ namespace EmployeeRegister.AutoMapper
             CreateMap<Company, CompanyDTO>()
                 .ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
 
-            CreateMap<Employee, EmployeeDTO>();
+            CreateMap<Employee, EmployeeDTO>();  // source|Destination  CreateMap<TSource,Tdestination>
             CreateMap<CompanyDTOW, Company>();
             CreateMap<EmployeeDTOW, Employee>();
+            CreateMap<EmployeeUDTOW, Employee>();
+            CreateMap<CompanyUDTOW, Company>();
         }
     }
 }

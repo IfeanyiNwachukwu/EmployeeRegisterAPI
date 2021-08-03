@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
+using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -72,11 +73,11 @@ namespace EmployeeRegister.Controllers
                 _logger.LogInfo($"company with id: {companyId} doesn't exist in the database");
                 return NotFound();
             }
-            var employeeEntity = _mapper.Map<Employee>(model);
+            var employeeEntity = _mapper.Map<Employee>(model);  // turning our model to an employee type
             _repository.Employee.CreateEmployeeForCompany(companyId,employeeEntity);
             _repository.Save();
 
-            var employeeToReturn = _mapper.Map<EmployeeDTO>(employeeEntity);
+            var employeeToReturn = _mapper.Map<EmployeeDTO>(employeeEntity);  // destination | source _mapper.Map<TDestination>(TSource object)
 
 
             return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
@@ -98,6 +99,33 @@ namespace EmployeeRegister.Controllers
                 return NotFound();
             }
             _repository.Employee.DeleteEmployee(employeeForCompany);
+            _repository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateemployeeForCompany(Guid companyId, Guid id, [FromBody] EmployeeUDTOW model)
+        {
+            if(model == null)
+            {
+                _logger.LogError("Employye Update DTO is null");
+                return BadRequest("Employye Update DTO is null");
+            }
+            var company = _repository.Company.GetCompany(companyId, trackChanges: false);
+            if(company == null)
+            {
+                _logger.LogInfo($"Company with id: {companyId} doesn't exist in the database.");
+                return NotFound();
+            }
+            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, trackChanges: true);
+            if(employeeEntity == null)
+            {
+                _logger.LogInfo($"Employee with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _mapper.Map(model, employeeEntity); // source | destination... everything in model is copied into employeeentity
             _repository.Save();
 
             return NoContent();
