@@ -4,6 +4,7 @@ using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
 using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -126,6 +127,38 @@ namespace EmployeeRegister.Controllers
             }
 
             _mapper.Map(model, employeeEntity); // source | destination... everything in model is copied into employeeentity
+            _repository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdatedEmployeeForCompany(Guid companyId, Guid id, [FromBody] JsonPatchDocument<EmployeeUDTOW> patchDoc)
+        {
+            if(patchDoc == null)
+            {
+                _logger.LogError("patchDoc object sent from client is null");
+                return BadRequest("patchDoc object is null");
+            }
+
+            var company = _repository.Company.GetCompany(companyId, trackChanges: false);
+            if(company == null)
+            {
+                _logger.LogInfo($"company with id: {companyId} doesn't exist in the database");
+                return NotFound();
+            }
+
+            var employeeentity = _repository.Employee.GetEmployee(companyId, id, trackChanges: true);
+            if(employeeentity == null)
+            {
+                _logger.LogInfo($"Employee with id: {id} doesn't eist in the database");
+                return NotFound();
+            }
+
+            var employeeToPatch = _mapper.Map<EmployeeUDTOW>(employeeentity);
+            patchDoc.ApplyTo(employeeToPatch);
+
+            _mapper.Map(employeeToPatch, employeeentity);
             _repository.Save();
 
             return NoContent();

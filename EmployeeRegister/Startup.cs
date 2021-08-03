@@ -47,7 +47,9 @@ namespace EmployeeRegister
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddCustomCSVFormatter();
+            }).AddNewtonsoftJson()     //to enable patch requests    
+               .AddXmlDataContractSerializerFormatters()
+               .AddCustomCSVFormatter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
