@@ -14,7 +14,7 @@ namespace Entities.Models
         [Required(ErrorMessage ="Age is a required field")]
         public int Age { get; set; }
         [Required(ErrorMessage ="Position is a required field.")]
-        [MaxLength(20,ErrorMessage ="Maximum length for the psition is 20 characters")]
+        [MaxLength(150,ErrorMessage ="Maximum length for the psition is 150 characters")]
         public string Position { get; set; }
         [ForeignKey(nameof(Company))]
         public Guid  CompanyId { get; set; }
