@@ -3,6 +3,7 @@ using Contracts;
 using EmployeeRegister.ModelBinders;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
+using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -127,6 +128,27 @@ namespace EmployeeRegister.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCompany(Guid id, [FromBody] CompanyUDTOW model)
+        {
+            if(model == null)
+            {
+                _logger.LogError("Update DTO for company sent from client is null");
+                return BadRequest("Update DTO for company sent from client is null");
+            }
+            var companyEntity = _repository.Company.GetCompany(id, trackChanges: true);
+            if(companyEntity == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database");
+            }
+            _mapper.Map(model, companyEntity);
+            _repository.Save();
+
+            return NoContent();
+        }
+
+       
    
     }
 }
