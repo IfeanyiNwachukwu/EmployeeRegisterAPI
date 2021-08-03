@@ -16,8 +16,9 @@ namespace EmployeeRegister.AutoMapper
             CreateMap<Employee, EmployeeDTO>();  // source|Destination  CreateMap<TSource,Tdestination>
             CreateMap<CompanyDTOW, Company>();
             CreateMap<EmployeeDTOW, Employee>();
-            CreateMap<EmployeeUDTOW, Employee>();
+            CreateMap<EmployeeUDTOW, Employee>().ReverseMap(); //The ReverseMap() allows for two way mapping
             CreateMap<CompanyUDTOW, Company>();
+
         }
     }
 }
