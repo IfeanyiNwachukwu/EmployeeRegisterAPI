@@ -1,5 +1,6 @@
 using Contracts;
 using EmployeeRegister.Extensions;
+using EmployeeRegister.Filters.ActionFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -35,8 +36,12 @@ namespace EmployeeRegister
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;  //Suppressing the 400 BadRequest() error
-            }); 
+            });
 
+            // ACTION FILTERS
+            services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
+            services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateEmployeeForCompanyExists>();
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 
 

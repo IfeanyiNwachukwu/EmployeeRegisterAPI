@@ -16,13 +16,13 @@ namespace Repository.RepositoryImplementations
 
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployees(Guid companyId, bool trackChanges)
+        public async Task<IEnumerable<Employee>> GetEmployeesAsync(Guid companyId, bool trackChanges)
         {
           return await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
                 .OrderBy(e => e.Name).ToListAsync();
         }
 
-        public async Task<Employee> GetEmployee(Guid companyId, Guid id, bool trackChanges)
+        public async Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges)
         {
             return await FindByCondition(c => c.CompanyId.Equals(companyId) && c.Id.Equals(id),trackChanges)
                 .SingleOrDefaultAsync();

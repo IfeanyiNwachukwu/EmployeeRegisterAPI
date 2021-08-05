@@ -16,18 +16,18 @@ namespace Repository.RepositoryImplementations
 
         }
 
-        public async  Task<IEnumerable<Company>> GetAllCompanies(bool trackChanges)
+        public async  Task<IEnumerable<Company>> GetAllCompaniesAsync(bool trackChanges)
        => await FindAll(trackChanges)
             .OrderBy(c => c.Name)
             .ToListAsync();
 
-        public async Task<Company> GetCompany(Guid companyId, bool trackchanges) =>
+        public async Task<Company> GetCompanyAsync(Guid companyId, bool trackchanges) =>
           await  FindByCondition(c => c.Id.Equals(companyId), trackchanges)
             .SingleOrDefaultAsync();
 
         public  void CreateCompany(Company company) =>  Create(company);
 
-        public async Task<IEnumerable<Company>> GetByIds(IEnumerable<Guid> ids, bool trachChanges) =>
+        public async Task<IEnumerable<Company>> GetByIdAsAsync(IEnumerable<Guid> ids, bool trachChanges) =>
             await FindByCondition(x => ids.Contains(x.Id), trachChanges)
             .ToListAsync();
 

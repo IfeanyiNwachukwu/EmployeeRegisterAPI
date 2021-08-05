@@ -38,7 +38,7 @@ namespace EmployeeRegister.Extensions
             services.AddDbContext<RepositoryContext>(
                 opts =>
                 opts.UseSqlServer(configuration.GetConnectionString("SqlConnection"),
-                    b => b.MigrationsAssembly("EmployeeRegister")));
+                    b => b.MigrationsAssembly("EmployeeRegister"))); // Added a migration assembly because our entities are in a different project
 
         public static void ConfigurerepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
