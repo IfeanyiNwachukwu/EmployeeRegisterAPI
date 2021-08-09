@@ -33,6 +33,10 @@ namespace EmployeeRegister.Controllers
         [HttpGet()]
         public async  Task<IActionResult> GetEmployeesForCompany(Guid companyId,[FromQuery] EmployeeParameters employeeParameters)
         {
+            if (!employeeParameters.ValidAgeRange)
+            {
+                return BadRequest("Max Age cabn't be less than min age");
+            }
             var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges: false);
             if(company == null)
             {

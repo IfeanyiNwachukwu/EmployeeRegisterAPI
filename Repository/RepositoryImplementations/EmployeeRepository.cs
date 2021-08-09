@@ -4,6 +4,7 @@ using Entities.Models;
 using Entities.RequestFeatures.EntityRequestParameters;
 using Entities.RequestFeatures.Meta;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,8 +27,10 @@ namespace Repository.RepositoryImplementations
         /// <returns></returns>
         public async Task<PagedList<Employee>> GetEmployeesAsync(Guid companyId,EmployeeParameters employeeParameters, bool trackChanges)
         {
-             var employees = await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
-                  .OrderBy(e => e.Name)
+            var employees = await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
+               .FilterEmployees(employeeParameters.MinAge, employeeParameters.MaxAge)
+               .Search(employeeParameters.SearchTerm)
+               .Sort(employeeParameters.OrderBy)
                    .ToListAsync();
 
             return  PagedList<Employee>
