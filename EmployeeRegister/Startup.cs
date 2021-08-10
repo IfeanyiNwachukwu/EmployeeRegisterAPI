@@ -1,6 +1,7 @@
 using Contracts;
 using EmployeeRegister.Extensions;
 using EmployeeRegister.Filters.ActionFilters;
+using Entities.DataTransferObjects.ReadOnly;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -9,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using Repository.DataShaper;
 using System.IO;
+using Contracts.DataShaper;
 
 
 namespace EmployeeRegister
@@ -42,6 +45,7 @@ namespace EmployeeRegister
             services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyExists>();
+            services.AddScoped<IDataShaper<EmployeeDTO>, DataShaper<EmployeeDTO>>();
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 
 
