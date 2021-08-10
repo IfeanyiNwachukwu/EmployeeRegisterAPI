@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Contracts.DataShaper;
 using EmployeeRegister.Filters.ActionFilters;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
@@ -22,12 +23,14 @@ namespace EmployeeRegister.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IDataShaper<EmployeeDTO> _datashaper;
 
-        public EmployeesController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public EmployeesController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDTO> datashaper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _datashaper = datashaper;
         }
 
         [HttpGet()]
@@ -50,7 +53,7 @@ namespace EmployeeRegister.Controllers
             
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDTO>>(employeesFromDb);
             
-            return Ok(employeesDto);
+            return Ok(_datashaper.ShapeData(employeesDto, employeeParameters.Fields));
         }
 
         [HttpGet("{id}", Name = "GetEmployeeForCompany")]
