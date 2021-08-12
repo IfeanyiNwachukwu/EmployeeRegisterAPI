@@ -20,7 +20,7 @@ namespace EmployeeRegister.ContentNegotiation
 
         protected override bool CanWriteType(Type type)
         {
-            if(typeof(CompanyDTO).IsAssignableFrom(type) || typeof(IEnumerable<CompanyDTO>).IsAssignableFrom(type))
+            if (typeof(CompanyDTO).IsAssignableFrom(type) || typeof(IEnumerable<CompanyDTO>).IsAssignableFrom(type))
             {
                 return base.CanWriteType(type);
             }
@@ -32,9 +32,9 @@ namespace EmployeeRegister.ContentNegotiation
             var response = context.HttpContext.Response;
             var buffer = new StringBuilder();
 
-            if(context.Object is IEnumerable<CompanyDTO>)
+            if (context.Object is IEnumerable<CompanyDTO>)
             {
-                foreach(var company in (IEnumerable<CompanyDTO>)context.Object)
+                foreach (var company in (IEnumerable<CompanyDTO>)context.Object)
                 {
                     FormatCsv(buffer, company);
                 }
