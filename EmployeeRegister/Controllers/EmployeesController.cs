@@ -2,6 +2,7 @@
 using Contracts;
 using Contracts.DataShaper;
 using EmployeeRegister.Filters.ActionFilters;
+using EmployeeRegister.Utility;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
 using Entities.DataTransferObjects.Writable.Updatable;
@@ -24,16 +25,20 @@ namespace EmployeeRegister.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IDataShaper<EmployeeDTO> _datashaper;
+        private readonly EmployeeLinks _employeeLinks;
 
-        public EmployeesController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDTO> datashaper)
+        public EmployeesController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDTO> datashaper, EmployeeLinks employeeLinks)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _datashaper = datashaper;
+            _employeeLinks = employeeLinks;
+
         }
 
-        [HttpGet()]
+        [HttpGet]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async  Task<IActionResult> GetEmployeesForCompany(Guid companyId,[FromQuery] EmployeeParameters employeeParameters)
         {
             if (!employeeParameters.ValidAgeRange)
@@ -52,8 +57,9 @@ namespace EmployeeRegister.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(employeesFromDb.MetaData));
             
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDTO>>(employeesFromDb);
-            
-            return Ok(_datashaper.ShapeData(employeesDto, employeeParameters.Fields));
+            var links = _employeeLinks.TryGenerateLinks(employeesDto, employeeParameters.Fields, companyId, HttpContext);
+            return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
+            //return Ok(_datashaper.ShapeData(employeesDto, employeeParameters.Fields));
         }
 
         [HttpGet("{id}", Name = "GetEmployeeForCompany")]

@@ -13,7 +13,7 @@ using NLog;
 using Repository.DataShaper;
 using System.IO;
 using Contracts.DataShaper;
-
+using EmployeeRegister.Utility;
 
 namespace EmployeeRegister
 {
@@ -46,6 +46,10 @@ namespace EmployeeRegister
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyExists>();
             services.AddScoped<IDataShaper<EmployeeDTO>, DataShaper<EmployeeDTO>>();
+
+           
+            services.AddScoped<ValidateMediaTypeAttribute>();
+            services.AddScoped<EmployeeLinks>();
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 
 
@@ -55,14 +59,21 @@ namespace EmployeeRegister
             //    config.RespectBrowserAcceptHeader = true;
             //    config.ReturnHttpNotAcceptable = true; // Returns 406 Not Acceptable if client tries to negotiate for a media type server does not support
             //}).AddXmlDataContractSerializerFormatters();
-
+         
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddNewtonsoftJson()     //to enable patch requests    
+            }).AddNewtonsoftJson()
                .AddXmlDataContractSerializerFormatters()
                .AddCustomCSVFormatter();
+
+           
+
+            services.AddCustomMediaTypes();
+
+            //to enable patch requests 
+            //.AddCustomCSVFormatter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
