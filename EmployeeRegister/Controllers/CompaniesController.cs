@@ -136,6 +136,16 @@ namespace EmployeeRegister.Controllers
 
             return NoContent();
         }
+        /// <summary>
+        /// Available options is returned in the allow Header of the response
+        /// </summary>
+        /// <returns></returns>
+        [HttpOptions]
+        public IActionResult GetCompaniesOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            return Ok();
+        }
 
         
     }
