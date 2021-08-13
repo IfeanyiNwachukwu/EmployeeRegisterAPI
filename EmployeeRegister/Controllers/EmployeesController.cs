@@ -43,7 +43,7 @@ namespace EmployeeRegister.Controllers
         {
             if (!employeeParameters.ValidAgeRange)
             {
-                return BadRequest("Max Age cabn't be less than min age");
+                return BadRequest("Max Age can't be less than min age");
             }
             var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges: false);
             if(company == null)

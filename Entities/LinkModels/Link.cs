@@ -1,5 +1,8 @@
 ﻿namespace Entities.LinkModels
 {
+    /// <summary>
+    /// class for the properties in the generated link
+    /// </summary>
     public class Link
     {
         public string Href { get; set; }

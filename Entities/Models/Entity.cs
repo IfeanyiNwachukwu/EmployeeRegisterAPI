@@ -21,6 +21,7 @@ namespace Entities.Models
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
 		{
+			
 			if (expando.TryGetValue(binder.Name, out object value))
 			{
 				result = value;
@@ -102,13 +103,14 @@ namespace Entities.Models
 			return expando.ContainsKey(key);
 		}
 
-		public ICollection<string> Keys
+		public ICollection<string> Keys  // This is a property that returns the keys in our dictionary
 		{
 			get { return expando.Keys; }
 		}
 
 		public bool Remove(string key)
 		{
+			
 			return expando.Remove(key);
 		}
 
@@ -116,8 +118,8 @@ namespace Entities.Models
 		{
 			return expando.TryGetValue(key, out value);
 		}
-
-		public ICollection<object> Values
+		
+		public ICollection<object> Values   // property returns all thr value in our dictioary
 		{
 			get { return expando.Values; }
 		}

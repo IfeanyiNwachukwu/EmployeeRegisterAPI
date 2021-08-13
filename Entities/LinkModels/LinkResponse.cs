@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Entities.LinkModels
-{
+{/// <summary>
+/// Response sent to client after all links have been generated
+/// </summary>
     public class LinkResponse
     {
         public bool HasLinks { get; set; }
@@ -11,8 +13,8 @@ namespace Entities.LinkModels
 
         public LinkResponse()
         {
-            LinkedEntities = new LinkCollectionWrapper<Entity>();
-            ShapedEntities = new List<Entity>();
+            LinkedEntities = new LinkCollectionWrapper<Entity>(); // returns this when there are links
+            ShapedEntities = new List<Entity>();  // returns this, when there are no url links
         }
 
     }

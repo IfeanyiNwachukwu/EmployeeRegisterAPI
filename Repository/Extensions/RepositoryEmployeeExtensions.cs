@@ -1,10 +1,7 @@
 ﻿using Entities.Models;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Linq.Dynamic.Core;
 using Repository.Extensions.Utility;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Repository.Extensions
 {
@@ -30,7 +27,9 @@ namespace Repository.Extensions
             // basic check if orderquery is null or empty
             // we return everything ordered by the name
             if (string.IsNullOrWhiteSpace(orderByQueryString))
+            {
                 return employees.OrderBy(e => e.Name);
+            }
 
             var orderQuery = OrderQueryBuilder.CreateOrderQuery<Employee>(orderByQueryString);
 
