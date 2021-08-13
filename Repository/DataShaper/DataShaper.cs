@@ -51,7 +51,7 @@ namespace Repository.DataShaper
             }
             else
             {
-                requiredProperties = Properties.ToList();
+                requiredProperties = Properties.ToList(); // sets required properties to every property founfd in the entity/object
             }
 
             return requiredProperties;
