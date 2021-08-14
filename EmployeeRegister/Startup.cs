@@ -40,6 +40,7 @@ namespace EmployeeRegister
             {
                 options.SuppressModelStateInvalidFilter = true;  //Suppressing the 400 BadRequest() error
             });
+            services.ConfigureVersioning();
 
             // ACTION FILTERS
             services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
