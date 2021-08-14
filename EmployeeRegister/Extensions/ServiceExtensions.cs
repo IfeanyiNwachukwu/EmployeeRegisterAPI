@@ -59,6 +59,8 @@ namespace EmployeeRegister.Extensions
                 {
                     newtonsoftJsonOutputFormatter
                     .SupportedMediaTypes.Add("application/vnd.employeeregister.hateoas+json");
+                    newtonsoftJsonOutputFormatter
+                    .SupportedMediaTypes.Add("application/vnd.employeeregister.apiroot+json");
                   
                 }
                 var xmlOutputFormatter = config.OutputFormatters
@@ -68,7 +70,9 @@ namespace EmployeeRegister.Extensions
             {
                 xmlOutputFormatter
                 .SupportedMediaTypes.Add("application/vnd.employeeregister.hateoas+xml");
-                   
+                xmlOutputFormatter
+                .SupportedMediaTypes.Add("application/vnd.employeeregister.apiroot+xml");
+
                 }
             });
         }

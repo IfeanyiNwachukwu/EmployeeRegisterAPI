@@ -28,7 +28,7 @@ namespace EmployeeRegister.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        [HttpGet]
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
 
@@ -56,7 +56,7 @@ namespace EmployeeRegister.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost(Name ="CreateCompany")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyDTOW model)
         {
@@ -147,6 +147,6 @@ namespace EmployeeRegister.Controllers
             return Ok();
         }
 
-        
+        // NOTE : GetCompanies and CreateCompanies are the only actions on the root URI level (api/companies)
     }
 }
