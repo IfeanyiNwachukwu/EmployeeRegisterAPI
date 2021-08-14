@@ -7,3 +7,6 @@
 
 //indicating versioning through a Query string
 https://localhost:5001/api/companies?api-version=2.0
+
+// With Caching
+-Cache-Control: max-age=180 --indicates that the response should be cached for 180 seconds
