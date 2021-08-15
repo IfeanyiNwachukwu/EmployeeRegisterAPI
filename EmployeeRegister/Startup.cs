@@ -41,6 +41,8 @@ namespace EmployeeRegister
                 options.SuppressModelStateInvalidFilter = true;  //Suppressing the 400 BadRequest() error
             });
             services.ConfigureVersioning();
+            services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
 
             // ACTION FILTERS
             services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
@@ -65,6 +67,8 @@ namespace EmployeeRegister
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
+                // Using CacheProfile to apply the same caching rues to all resources
+                config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
             }).AddNewtonsoftJson()
                .AddXmlDataContractSerializerFormatters()
                .AddCustomCSVFormatter();
@@ -96,7 +100,8 @@ namespace EmployeeRegister
             {
                 ForwardedHeaders = ForwardedHeaders.All
             });
-
+            app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
             app.UseRouting();
 
             app.UseAuthorization();

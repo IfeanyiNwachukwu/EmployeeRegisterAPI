@@ -3,6 +3,7 @@ using EmployeeRegister.ContentNegotiation;
 using EmployeeRegister.Controllers;
 using Entities;
 using LoggerServices;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -121,6 +122,27 @@ namespace EmployeeRegister.Extensions
             }
                 );
         }
+        /// <summary>
+        /// For caching responses
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureResponseCaching(this IServiceCollection services) => services.AddResponseCaching();
 
+        /// <summary>
+        /// For controlling cache Headers like cache-control, Expires, Etag and Last modified
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
+            services.AddHttpCacheHeaders(
+                (expirationOpt) =>
+                {
+                    expirationOpt.MaxAge = 65;
+                    expirationOpt.CacheLocation = CacheLocation.Private;
+                },
+                (validationOpt) =>
+                {
+                    validationOpt.MustRevalidate = true;
+                }
+                );
     }
 }
