@@ -14,6 +14,8 @@ using Repository.DataShaper;
 using System.IO;
 using Contracts.DataShaper;
 using EmployeeRegister.Utility;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Http;
 
 namespace EmployeeRegister
 {
@@ -43,6 +45,14 @@ namespace EmployeeRegister
             services.ConfigureVersioning();
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
+            
+            services.AddMemoryCache();
+
+            // Rate Limiting and Throttling
+            services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
+           
+
 
             // ACTION FILTERS
             services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
@@ -102,6 +112,8 @@ namespace EmployeeRegister
             });
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
+
+            app.UseIpRateLimiting();
             app.UseRouting();
 
             app.UseAuthorization();

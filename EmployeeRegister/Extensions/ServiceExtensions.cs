@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using AspNetCoreRateLimit;
+using Contracts;
 using EmployeeRegister.ContentNegotiation;
 using EmployeeRegister.Controllers;
 using Entities;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EmployeeRegister.Extensions
@@ -144,5 +146,30 @@ namespace EmployeeRegister.Extensions
                     validationOpt.MustRevalidate = true;
                 }
                 );
+        /// <summary>
+        /// Handles Rate Limiting/throttling
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+            {
+            new RateLimitRule
+            {
+            Endpoint = "*",
+            Limit= 3,
+            Period = "5m"
+            }
+            };
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        }
     }
 }
