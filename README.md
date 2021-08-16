@@ -13,3 +13,6 @@ https://localhost:5001/api/companies?api-version=2.0
 
 // Validation before returning cached responses
 -Marvin.Cache.Headers
+
+// Crearing A Secret key for JWT
+setx SECRET "<Name>" /M
