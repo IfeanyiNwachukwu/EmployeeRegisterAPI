@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EmployeeRegister</name>
+    </assembly>
+    <members>
+        <member name="M:EmployeeRegister.AuthenticationManagement.AuthenticationManager.GenerateTokenOptions(Microsoft.IdentityModel.Tokens.SigningCredentials,System.Collections.Generic.List{System.Security.Claims.Claim})">
+            <summary>
+            returns an object of the JwtSecurityToken type
+            </summary>
+            <param name="signingCredentials"></param>
+            <param name="claims"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.AuthenticationManagement.AuthenticationManager.GetClaims">
+            <summary>
+            Creates a list of claims with the username inside and all the roles the user belongs to
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.AuthenticationManagement.AuthenticationManager.GetSigningCredentials">
+            <summary>
+            returns a secret key as a byte array with the security algorithm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.Controllers.CompaniesController.GetCompanies">
+            <summary>
+            Gets the list of all companies
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.Controllers.CompaniesController.CreateCompany(Entities.DataTransferObjects.Writable.CompanyDTOW)">
+            <summary>
+            Creates a newly created company
+            </summary>
+            <param name="model"></param>
+            <returns>A newly created company</returns>
+            <response code="201">Returns the newly created Item</response>
+            <response code="400">If the Item is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:EmployeeRegister.Controllers.CompaniesController.GetCompaniesOptions">
+            <summary>
+            Available options is returned in the allow Header of the response
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:EmployeeRegister.Controllers.CompaniesV2Controller">
+            <summary>
+            Api Version is indicated in a query string
+            </summary>
+        </member>
+        <member name="M:EmployeeRegister.Controllers.CompaniesV2Controller.GetCompaniesReload">
+            <summary>
+            API version is indicated in the route name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.Controllers.CompaniesV2Controller.GetCompaniesReloaded">
+            <summary>
+            Here the version is sent in the API header
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:EmployeeRegister.Extensions.ExceptionMiddlewareExtensions">
+            <summary>
+            Global Error Exception Handler
+            </summary>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureCors(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Cross origin Resource Sharing(CORS) configuration
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureIISIntegration(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            IIS configuration
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureLoggerServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Logger services
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureSqlContext(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Database setup/configuration
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigurerepositoryManager(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Repository Manager/ Unit of Work setup
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.AddCustomCSVFormatter(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            A custom csv formatter
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.AddCustomMediaTypes(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            For Adding Custom Media types/headers
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureVersioning(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configuring/settig up API versioning
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureResponseCaching(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            For caching responses
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureHttpCacheHeaders(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            For controlling cache Headers like cache-control, Expires, Etag and Last modified
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureRateLimitingOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Handles Rate Limiting/throttling
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureIdentity(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            For managing identity and user access
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureJWT(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Managing login using JSON Web Tokens
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:EmployeeRegister.Extensions.ServiceExtensions.ConfigureSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            for documenting API with Swagger
+            </summary>
+        </member>
+    </members>
+</doc>
