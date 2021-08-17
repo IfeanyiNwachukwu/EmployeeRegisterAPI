@@ -16,3 +16,6 @@ https://localhost:5001/api/companies?api-version=2.0
 
 // Crearing A Secret key for JWT
 setx SECRET "<Name>" /M
+  
+ // Swagger Integraton
+  PM> Install-Package Swashbuckle.AspNetCore -version 5.6.3
