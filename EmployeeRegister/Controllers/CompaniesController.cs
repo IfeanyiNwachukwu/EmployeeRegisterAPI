@@ -19,7 +19,8 @@ namespace EmployeeRegister.Controllers
     [ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
-    [ResponseCache(CacheProfileName = "120SecondsDuration")] //this cache rule applies to every action inside this controller except the ones that already have the ResponseCache attribute
+    [ApiExplorerSettings(GroupName = "v1")]
+/*    [ResponseCache(CacheProfileName = "120SecondsDuration")] *///this cache rule applies to every action inside this controller except the ones that already have the ResponseCache attribute
     public class CompaniesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -32,7 +33,11 @@ namespace EmployeeRegister.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        [HttpGet(Name = "GetCompanies"), Authorize(Roles = "Administrator")]
+        /// <summary>
+        /// Gets the list of all companies
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(Name = "GetCompanies"), Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetCompanies()
         {
 
@@ -63,6 +68,14 @@ namespace EmployeeRegister.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a newly created company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>A newly created company</returns>
+        /// <response code="201">Returns the newly created Item</response>
+        /// <response code="400">If the Item is null</response>
+        /// <response code="422">If the model is invalid</response>
         [HttpPost(Name ="CreateCompany")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyDTOW model)

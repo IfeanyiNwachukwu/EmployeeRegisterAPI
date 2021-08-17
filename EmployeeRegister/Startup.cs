@@ -74,6 +74,8 @@ namespace EmployeeRegister
             services.ConfigureJWT(Configuration);
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
+            // SWAGGER
+            services.ConfigureSwagger();
           
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 
@@ -134,6 +136,13 @@ namespace EmployeeRegister
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee Register API v1");
+                s.SwaggerEndpoint("/swagger/v2/swagger.json", "Employee Register API v2");
             });
         }
     }

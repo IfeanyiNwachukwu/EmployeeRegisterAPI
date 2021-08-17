@@ -7,9 +7,10 @@ namespace EmployeeRegister.Controllers
     /// <summary>
     /// Api Version is indicated in a query string
     /// </summary>
-    [ApiVersion("2.0",Deprecated =true)]
+    //[ApiVersion("2.0",Deprecated =true)]
     [Route("api/companies")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v2")]
     public class CompaniesV2Controller : ControllerBase
     {
         private readonly IRepositoryManager _repository;
