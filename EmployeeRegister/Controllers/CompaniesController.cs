@@ -7,6 +7,7 @@ using Entities.DataTransferObjects.Writable;
 using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace EmployeeRegister.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        [HttpGet(Name = "GetCompanies")]
+        [HttpGet(Name = "GetCompanies"), Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetCompanies()
         {
 

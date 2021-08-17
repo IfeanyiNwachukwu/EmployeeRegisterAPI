@@ -14,6 +14,12 @@ using Repository.DataShaper;
 using System.IO;
 using Contracts.DataShaper;
 using EmployeeRegister.Utility;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Entities.Models;
+using Contracts.AuthenticationManagement;
+using EmployeeRegister.AuthenticationManagement;
 
 namespace EmployeeRegister
 {
@@ -43,6 +49,14 @@ namespace EmployeeRegister
             services.ConfigureVersioning();
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
+            
+            services.AddMemoryCache();
+
+            // Rate Limiting and Throttling
+            services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
+           
+
 
             // ACTION FILTERS
             services.AddScoped<ValidationFilterAttribute>();  // Filter to do common model alidation in Post and Put requests
@@ -53,6 +67,14 @@ namespace EmployeeRegister
            
             services.AddScoped<ValidateMediaTypeAttribute>();
             services.AddScoped<EmployeeLinks>();
+
+            // IDENTITY
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+          
             /*   services.AddControllers();*/ //returns onlyJSON content by default
 
 
@@ -62,7 +84,7 @@ namespace EmployeeRegister
             //    config.RespectBrowserAcceptHeader = true;
             //    config.ReturnHttpNotAcceptable = true; // Returns 406 Not Acceptable if client tries to negotiate for a media type server does not support
             //}).AddXmlDataContractSerializerFormatters();
-         
+
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
@@ -102,6 +124,9 @@ namespace EmployeeRegister
             });
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
+
+            app.UseIpRateLimiting();
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();

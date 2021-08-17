@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects.ReadOnly;
 using Entities.DataTransferObjects.Writable;
+using Entities.DataTransferObjects.Writable.Creatable;
 using Entities.DataTransferObjects.Writable.Updatable;
 using Entities.Models;
 
@@ -18,6 +19,7 @@ namespace EmployeeRegister.AutoMapper
             CreateMap<EmployeeDTOW, Employee>();
             CreateMap<EmployeeUDTOW, Employee>().ReverseMap(); //The ReverseMap() allows for two way mapping
             CreateMap<CompanyUDTOW, Company>();
+            CreateMap<UserForRegistrationDTOW, User>();
 
         }
     }

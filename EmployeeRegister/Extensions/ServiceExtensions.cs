@@ -1,10 +1,15 @@
-﻿using Contracts;
+﻿using AspNetCoreRateLimit;
+using Contracts;
 using EmployeeRegister.ContentNegotiation;
 using EmployeeRegister.Controllers;
 using Entities;
+using Entities.Models;
 using LoggerServices;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -12,7 +17,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
+using System.Collections.Generic;
 using System.Linq;
+using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace EmployeeRegister.Extensions
 {
@@ -144,5 +154,90 @@ namespace EmployeeRegister.Extensions
                     validationOpt.MustRevalidate = true;
                 }
                 );
+        /// <summary>
+        /// Handles Rate Limiting/throttling
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+            {
+            new RateLimitRule
+            {
+            Endpoint = "*",
+            Limit= 30,
+            Period = "5m"
+            }
+            };
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        }
+        /// <summary>
+        /// For managing identity and user access
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            //adding and configuring identity for the User type
+            var builder = services.AddIdentityCore<User>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 10;
+                o.User.RequireUniqueEmail = true;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole),
+            builder.Services);
+            builder.AddEntityFrameworkStores<RepositoryContext>()
+            .AddDefaultTokenProviders();
+
+            
+        }
+        /// <summary>
+        /// Managing login using JSON Web Tokens
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            //Exteact JwtSettings from the appsettings.json
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            // Extract environment variable
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            // Register the authentication middleware
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                // Rules that determine when token is valid
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true, // issuer is the actual server that created the token
+                    ValidateAudience = true, // The receiver of the token is a valid recipient
+                    ValidateLifetime = true, // The token has not expired
+                    ValidateIssuerSigningKey = true, // sign in key is valid and trusted by the server
+
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+
+                    IssuerSigningKey = new
+                    SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                   
+                };
+            });
+        }
     }
 }
