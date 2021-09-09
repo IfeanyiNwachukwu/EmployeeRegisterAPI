@@ -22,6 +22,6 @@ namespace Entities
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<LogEntry> ErrorLogger { get; set; }
+       
     }
 }
